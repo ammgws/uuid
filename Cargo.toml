@@ -54,6 +54,10 @@ status = "actively-developed"
 [badges.travis-ci]
 repository = "uuid-rs/uuid"
 
+[dependencies.getrandom]
+optional = true
+version = "0.1"
+
 [dependencies.md5]
 optional = true
 version = "0.7"
@@ -95,7 +99,7 @@ std = []
 stdweb = [ "rand/stdweb" ]
 v1 = []
 v3 = ["md5"]
-v4 = ["rand"]
+v4 = ["getrandom"]
 v5 = ["sha1"]
 wasm-bindgen = ["rand/wasm-bindgen"]
 

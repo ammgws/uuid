@@ -1,12 +1,7 @@
 use crate::prelude::*;
-use rand;
 
 impl Uuid {
     /// Creates a random UUID.
-    ///
-    /// This uses the [`rand`] crate's default task RNG as the source of random
-    /// numbers. If you'd like to use a custom generator, don't use this
-    /// method: use the `rand::Rand trait`'s `rand()` method instead.
     ///
     /// Note that usage of this method requires the `v4` feature of this crate
     /// to be enabled.
@@ -21,19 +16,16 @@ impl Uuid {
     /// let uuid = Uuid::new_v4();
     /// ```
     ///
-    /// [`rand`]: https://crates.io/crates/rand
-    pub fn new_v4() -> Self {
-        use rand::RngCore;
+    pub fn new_v4() -> Result<Uuid, getrandom::Error> {
+        let mut bytes = [0u8; 16];
+        getrandom::getrandom(&mut bytes)?;
 
-        let mut rng = rand::thread_rng();
-        let mut bytes = [0; 16];
-
-        rng.fill_bytes(&mut bytes);
-
-        Builder::from_bytes(bytes)
+        let mut builder = crate::builder::Builder::from_bytes(bytes);
+        builder
             .set_variant(Variant::RFC4122)
-            .set_version(Version::Random)
-            .build()
+            .set_version(Version::Random);
+        builder.build();
+        Ok(builder.to_simple().to_string())
     }
 }
 
