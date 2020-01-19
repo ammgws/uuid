@@ -22,7 +22,7 @@ impl Uuid {
 
         let mut uuid = crate::builder::Builder::from_bytes(bytes)
             .set_variant(Variant::RFC4122)
-            .set_version(Version::Random);
+            .set_version(Version::Random)
             .build();
         Ok(uuid)
     }
