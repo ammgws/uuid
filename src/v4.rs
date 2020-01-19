@@ -20,12 +20,11 @@ impl Uuid {
         let mut bytes = [0u8; 16];
         getrandom::getrandom(&mut bytes)?;
 
-        let mut builder = crate::builder::Builder::from_bytes(bytes);
-        builder
+        let mut uuid = crate::builder::Builder::from_bytes(bytes);
             .set_variant(Variant::RFC4122)
             .set_version(Version::Random);
-        builder.build();
-        Ok(builder.to_simple().to_string())
+            .build();
+        Ok(uuid)
     }
 }
 
